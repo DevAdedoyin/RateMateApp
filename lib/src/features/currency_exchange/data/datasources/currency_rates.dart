@@ -22,7 +22,7 @@ class CurrencyConversionDataSource {
             responseBody as Map<String, dynamic>);
       } else {
         throw HttpException(
-          'Failed to fetch currency data.',
+          'Unable to fetch currency data. Please wait after some times and try again.',
         );
       }
     } catch (e) {
