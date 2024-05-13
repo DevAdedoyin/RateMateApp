@@ -1,3 +1,4 @@
+import 'package:currnverter/src/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -32,9 +33,9 @@ class _CurrencyConversionAppState extends ConsumerState<CurrencyConversionApp> {
       // routerDelegate: goRouter.routerDelegate,
       debugShowCheckedModeBanner: false,
       title: 'Currency Conversion',
-      // theme: darkTheme,
-      // darkTheme: lightTheme,
-      // themeMode: themeManager.themeMode,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
     );
   }
 }
