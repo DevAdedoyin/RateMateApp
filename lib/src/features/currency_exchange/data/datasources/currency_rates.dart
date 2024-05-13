@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:currnverter/src/exceptions/http_exceptions.dart';
+import 'package:currnverter/src/features/currency_exchange/domain/currency_history_model.dart';
 import 'package:currnverter/src/features/currency_exchange/domain/currency_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -32,7 +33,7 @@ class CurrencyConversionDataSource {
     }
   }
 
-  static Future<CurrencyConversionModel> fetchHistoricalData(
+  static Future<HistoricalCurrencyData> fetchHistoricalData(
       {required baseCurrency, required date}) async {
     try {
       final apiKey = dotenv.env['HISTORICAL_EXCHANGE_RATE_API_KEY'];
@@ -44,11 +45,11 @@ class CurrencyConversionDataSource {
       final responseBody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        return CurrencyConversionModel.fromJson(
+        return HistoricalCurrencyData.fromJson(
             responseBody as Map<String, dynamic>);
       } else {
         throw HttpException(
-          'Unable to fetch currency data. Please wait after some times and try again.',
+          'Unable to fetch currency historical data. Please wait after some times and try again.',
         );
       }
     } catch (e) {
