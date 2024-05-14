@@ -1,3 +1,4 @@
+import 'package:currnverter/src/routing/routes..dart';
 import 'package:currnverter/src/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,13 +25,8 @@ class CurrencyConversionApp extends ConsumerStatefulWidget {
 class _CurrencyConversionAppState extends ConsumerState<CurrencyConversionApp> {
   @override
   Widget build(BuildContext context) {
-    // ThemeManager themeManager = ThemeManager();
-    // final router = ref.watch(goRouterProvider);
-
     return MaterialApp.router(
-      // routeInformationParser: goRouter.routeInformationParser,
-      // routeInformationProvider: goRouter.routeInformationProvider,
-      // routerDelegate: goRouter.routerDelegate,
+      routerConfig: goRouter,
       debugShowCheckedModeBanner: false,
       title: 'Currency Conversion',
       theme: AppTheme.lightTheme,

@@ -5,7 +5,7 @@ import 'package:currnverter/src/features/onboarding/presentation/onboarding_scre
 import 'package:currnverter/src/features/onboarding/presentation/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
-GoRouter router = GoRouter(routes: [
+GoRouter goRouter = GoRouter(routes: [
   GoRoute(
     path: '/',
     builder: (context, state) => const SplashScreen(),
