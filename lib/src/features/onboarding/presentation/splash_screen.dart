@@ -20,7 +20,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   void initState() {
-    Timer(const Duration(milliseconds: 7000), () {
+    Timer(const Duration(milliseconds: 500), () {
       setState(() {
         // _visibility = true;
         _opacity = 1.0;
@@ -56,7 +56,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 width: size.height < 690 ? _smallSize : _bigSize,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                duration: const Duration(milliseconds: 6000),
+                duration: const Duration(milliseconds: 7000),
                 child: AnimatedOpacity(
                     opacity: _opacity,
                     duration: const Duration(milliseconds: 4000),
