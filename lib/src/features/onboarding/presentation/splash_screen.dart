@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:currnverter/src/constants/route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -26,8 +28,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         _bigSize = 240;
       });
       Future.delayed(
-        const Duration(milliseconds: 5000),
-        () {},
+        const Duration(milliseconds: 7000),
+        () {
+          context.go(Routes.onboarding);
+        },
       );
     });
 
