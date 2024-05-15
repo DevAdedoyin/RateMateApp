@@ -1,3 +1,4 @@
+import 'package:currnverter/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class ElevatedButtonThemes {
@@ -8,15 +9,15 @@ class ElevatedButtonThemes {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: Colors.white,
-      backgroundColor: Colors.green[900],
+      backgroundColor: AppColors.primaryColors,
       disabledForegroundColor: Colors.grey,
       disabledBackgroundColor: Colors.grey,
-      side: BorderSide(color: Colors.green[900]!),
-      padding: const EdgeInsets.symmetric(vertical: 18),
+      side: const BorderSide(color: AppColors.primaryColors),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       textStyle: const TextStyle(
           fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
       ),
     ),
   );
@@ -26,15 +27,15 @@ class ElevatedButtonThemes {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: Colors.white,
-      backgroundColor: Colors.green[900],
+      backgroundColor: AppColors.primaryColors,
       disabledForegroundColor: Colors.grey,
       disabledBackgroundColor: Colors.grey,
-      side: BorderSide(color: Colors.green[900]!),
-      padding: const EdgeInsets.symmetric(vertical: 18),
+      side: const BorderSide(color: AppColors.primaryColors),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       textStyle: const TextStyle(
           fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
       ),
     ),
   );
