@@ -1,3 +1,4 @@
+import 'package:currnverter/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class CurrencySelector extends StatelessWidget {
@@ -23,16 +24,13 @@ class CurrencySelector extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(state),
+            Text(state, style: TextStyle(color: Colors.black54)),
             Text(
               currency,
               style: textTheme.headlineMedium,
             ),
             const Icon(Icons.keyboard_arrow_down_rounded),
-            Text(
-              country,
-
-            ),
+            Text(country, style: TextStyle(color: Colors.black54)),
           ],
         ),
       ),

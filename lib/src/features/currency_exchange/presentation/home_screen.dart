@@ -53,21 +53,32 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: SizedBox(
                   width: double.maxFinite,
-                  height: size.height * 0.35,
-                  child: const Stack(children: [
-                    Positioned(
+                  height: size.height * 0.30,
+                  child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                    const Positioned(
+                        left: 0,
                         child: CurrencySelector(
-                      state: "From",
-                      currency: "EUR",
-                      country: "Euro",
-                    )),
-                    Positioned(
+                          state: "From",
+                          currency: "EUR",
+                          country: "Euro",
+                        )),
+                    const Positioned(
                         right: 0,
                         child: CurrencySelector(
                           state: "To",
                           currency: "USD",
                           country: "Us Dollar",
                         )),
+                    Container(
+                      width: size.width * 0.17,
+                      height: size.width * 0.17,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.white),
+                      child: const Icon(Icons.compare_arrows_rounded, size: 35,),
+                    ),
                   ]),
                 ),
               )
