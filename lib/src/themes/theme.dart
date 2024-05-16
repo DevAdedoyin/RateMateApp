@@ -1,5 +1,7 @@
 import 'package:currnverter/src/themes/custom_themes/appbar_theme.dart';
 import 'package:currnverter/src/themes/custom_themes/elevated_button_theme.dart';
+import 'package:currnverter/src/themes/custom_themes/icon_button_theme.dart';
+import 'package:currnverter/src/themes/custom_themes/icon_theme.dart';
 import 'package:currnverter/src/themes/custom_themes/text_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +16,9 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.white,
       textTheme: AppTextTheme.lightTextTheme,
       elevatedButtonTheme: ElevatedButtonThemes.lightElevatedButtonTheme,
-      appBarTheme: AppbarTheme.lightAppBarTheme);
+      appBarTheme: AppbarTheme.lightAppBarTheme,
+      iconButtonTheme: IconButtonThemes.lightModeIconButton,
+      iconTheme: IconThemes.lightModeIcon);
 
   static ThemeData darkTheme = ThemeData(
       useMaterial3: true,
