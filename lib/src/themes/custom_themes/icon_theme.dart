@@ -5,6 +5,6 @@ class IconThemes {
   IconThemes._();
 
   static const lightModeIcon = IconThemeData(
-    color: Color.fromARGB(255, 255, 255, 1),
+    // color: Color.fromARGB(255, 255, 255, 1),
   );
 }

@@ -8,7 +8,7 @@ class IconButtonThemes {
       style: IconButton.styleFrom(
     elevation: 2,
     backgroundColor: AppColors.primaryColors,
-    padding: EdgeInsets.all(1),
-    iconSize: 1,
+    // padding: EdgeInsets.all(1),
+    // iconSize: 1,
   ));
 }
