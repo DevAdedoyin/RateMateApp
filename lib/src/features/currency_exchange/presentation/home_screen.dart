@@ -14,190 +14,155 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  TextEditingController? _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-        appBar: AppBar(
-          // elevation: 0,
-          title: Text(
-            "Currnverter",
-            style: textTheme.headlineMedium,
-          ),
-          actions: [
-            SizedBox(
-              height: 35,
-              width: 35,
-              child: IconButton(
-                  iconSize: 20,
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.calendar_month,
-                    color: AppColors.secondaryColor,
-                  )),
-            ),
-            horizontalGaps(10.0),
-            SizedBox(
-              height: 35,
-              width: 35,
-              child: IconButton(
-                  iconSize: 20,
-                  padding: EdgeInsets.all(3),
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.mode_night,
-                    color: AppColors.secondaryColor,
-                  )),
-            ),
-            horizontalGaps(10.0),
-          ],
-        ),
-        body: SizedBox(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                  width: double.maxFinite,
-                  height: size.height * 0.30,
-                  child: Stack(alignment: Alignment.center, children: [
-                    const Positioned(
-                        left: 0,
-                        child: CurrencySelector(
-                          state: "From",
-                          currency: "EUR",
-                          country: "Euro",
-                        )),
-                    const Positioned(
-                        right: 0,
-                        child: CurrencySelector(
-                          state: "To",
-                          currency: "USD",
-                          country: "US Dollar",
-                        )),
-                    Container(
-                      width: size.width * 0.17,
-                      height: size.width * 0.17,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.white),
-                      child: const Icon(
-                        Icons.compare_arrows_rounded,
-                        size: 35,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-              SizedBox(
-                width: size.width * 0.9,
-                child: TextField(
-                  // enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    contentPadding: EdgeInsets.all(10),
-                    filled: true,
-                    hintText: "Please enter amount",
-                    // label: Text("Currency"),
+    return SizedBox(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 0.0, left: 10, right: 10, bottom: 10),
+            child: SizedBox(
+              width: double.maxFinite,
+              height: size.height * 0.29,
+              child: Stack(alignment: Alignment.center, children: [
+                const Positioned(
+                    left: 0,
+                    child: CurrencySelector(
+                      state: "From",
+                      currency: "EUR",
+                      country: "Euro",
+                    )),
+                const Positioned(
+                    right: 0,
+                    child: CurrencySelector(
+                      state: "To",
+                      currency: "USD",
+                      country: "US Dollar",
+                    )),
+                Container(
+                  width: size.width * 0.17,
+                  height: size.width * 0.17,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.white),
+                  child: const Icon(
+                    Icons.currency_exchange,
+                    size: 30,
                   ),
                 ),
+              ]),
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.9,
+            child: TextField(
+              // enabled: false,
+              readOnly: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                contentPadding: EdgeInsets.all(10),
+                filled: true,
+                hintText: "Please enter amount",
+                // label: Text("Currency"),
               ),
-              verticalGaps(10.0),
-              SizedBox(
-                width: size.width * 0.9,
-                height: size.height * 0.15,
-                child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7)),
-                    elevation: 5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+          ),
+          verticalGaps(10.0),
+          SizedBox(
+            width: size.width * 0.9,
+            height: size.height * 0.14,
+            child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7)),
+                // elevation: 5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              "1 EUR",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                            Text(
-                              "100",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            )
-                          ],
-                        ),
-                        Card(
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          child: const Icon(
-                            Icons.compare_arrows_rounded,
-                            size: 40,
+                        Text(
+                          "1 EUR",
+                          style: TextStyle(
+                            color: Colors.black45,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              "0.87657 USD",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "1000400",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
+                        Text(
+                          "100",
+                          style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        )
                       ],
-                    )),
-              ),
-              Spacer(),
-              Container(
-                color: Colors.black87,
-                child: VirtualKeyboard(
-                    height: size.height * 0.30,
-                    //width: 500,
-                    textColor: Colors.white,
-                    textController: _textController,
-                    //customLayoutKeys: _customLayoutKeys,
-                    defaultLayouts: const [
-                      VirtualKeyboardDefaultLayouts.Arabic,
-                      VirtualKeyboardDefaultLayouts.English
-                    ],
-                    //reverseLayout :true,
-                    type: VirtualKeyboardType.Numeric,
-                    onKeyPress: (val) {}),
-              )
-              // Expanded(
-              //   child: OnscreenKeyboard(
-              //     value: 'atha',
-              //     backgroundColor: Colors.blue,
-              //     buttonColor: Colors.amber,
-              //     focusColor: Colors.red,
-              //     onChanged: (txt) {},
-              //     initialCase: InitialCase.NUMERIC,
-              //   ),
-              // ),
-            ],
+                    ),
+                    Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Icon(
+                        Icons.currency_exchange,
+                        size: 20,
+                      ),
+                    ),
+                    const Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "0.87657 USD",
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "1000400",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ],
+                )),
           ),
-        ));
+          Spacer(),
+          Container(
+            color: Colors.black12,
+            child: VirtualKeyboard(
+                height: size.height * 0.255,
+                //width: 500,
+                textColor: Colors.black87,
+                textController: _textController,
+                //customLayoutKeys: _customLayoutKeys,
+                defaultLayouts: const [
+                  VirtualKeyboardDefaultLayouts.Arabic,
+                  VirtualKeyboardDefaultLayouts.English
+                ],
+                //reverseLayout :true,
+                type: VirtualKeyboardType.Numeric,
+                onKeyPress: (val) {}),
+          )
+          // Expanded(
+          //   child: OnscreenKeyboard(
+          //     value: 'atha',
+          //     backgroundColor: Colors.blue,
+          //     buttonColor: Colors.amber,
+          //     focusColor: Colors.red,
+          //     onChanged: (txt) {},
+          //     initialCase: InitialCase.NUMERIC,
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 }

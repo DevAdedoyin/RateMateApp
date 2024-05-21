@@ -1,4 +1,5 @@
 import 'package:currnverter/src/constants/route_constants.dart';
+import 'package:currnverter/src/features/currency_exchange/presentation/dashboard/dashboard.dart';
 import 'package:currnverter/src/features/currency_exchange/presentation/history_screen.dart';
 import 'package:currnverter/src/features/currency_exchange/presentation/home_screen.dart';
 import 'package:currnverter/src/features/onboarding/presentation/onboarding_screen/onboarding_screen.dart';
@@ -14,12 +15,16 @@ GoRouter goRouter = GoRouter(routes: [
     path: Routes.onboarding,
     builder: (context, state) => const OnboardingScreen(),
   ),
+  // GoRoute(
+  //   path: Routes.home,
+  //   builder: (context, state) => const HomeScreen(),
+  // ),
+  // GoRoute(
+  //   path: Routes.history,
+  //   builder: (context, state) => const HistoryScreen(),
+  // ),
   GoRoute(
-    path: Routes.home,
-    builder: (context, state) => const HomeScreen(),
-  ),
-  GoRoute(
-    path: Routes.history,
-    builder: (context, state) => const HistoryScreen(),
+    path: Routes.dashboard,
+    builder: (context, state) => const DashboardScreen(),
   ),
 ]);

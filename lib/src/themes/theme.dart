@@ -18,7 +18,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemes.lightElevatedButtonTheme,
       appBarTheme: AppbarTheme.lightAppBarTheme,
       iconButtonTheme: IconButtonThemes.lightModeIconButton,
-      iconTheme: IconThemes.lightModeIcon);
+     );
 
   static ThemeData darkTheme = ThemeData(
       useMaterial3: true,

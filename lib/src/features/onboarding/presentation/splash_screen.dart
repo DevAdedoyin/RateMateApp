@@ -20,7 +20,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   void initState() {
-    Timer(const Duration(milliseconds: 500), () {
+    Timer(const Duration(milliseconds: 1000), () {
       setState(() {
         // _visibility = true;
         _opacity = 1.0;
@@ -28,7 +28,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         _bigSize = 240;
       });
       Future.delayed(
-        const Duration(milliseconds: 7000),
+        const Duration(milliseconds: 5000),
         () {
           context.go(Routes.onboarding);
         },
@@ -56,7 +56,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 width: size.height < 690 ? _smallSize : _bigSize,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                duration: const Duration(milliseconds: 7000),
+                duration: const Duration(milliseconds: 5000),
                 child: AnimatedOpacity(
                     opacity: _opacity,
                     duration: const Duration(milliseconds: 4000),

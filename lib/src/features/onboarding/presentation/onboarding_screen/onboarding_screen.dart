@@ -77,7 +77,7 @@ class OnboardingScreen extends ConsumerWidget {
                         .jumpToPage(ref.read(currentPage.notifier).state);
                     break;
                   default:
-                    context.go(Routes.home);
+                    context.go(Routes.dashboard);
                 }
               },
               child: Text(pageIndex == 2 ? "Get started" : "Next")),
