@@ -30,7 +30,10 @@ class CurrencySelector extends StatelessWidget {
               style: textTheme.headlineMedium,
             ),
             const Icon(Icons.keyboard_arrow_down_rounded),
-            Text(country, style: TextStyle(color: Colors.black54)),
+            Text(
+              country,
+                style: TextStyle(color: Colors.black54)
+            ),
           ],
         ),
       ),

@@ -41,6 +41,8 @@ dependencies:
   riverpod: ^2.5.1
   go_router: ^14.1.1
   virtual_keyboard_multi_language: ^1.0.3
+  onscreen_keyboard: ^1.0.3
+
 
 
 dev_dependencies:
