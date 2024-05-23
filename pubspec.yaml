@@ -42,8 +42,7 @@ dependencies:
   go_router: ^14.1.1
   virtual_keyboard_multi_language: ^1.0.3
   onscreen_keyboard: ^1.0.3
-
-
+  date_picker_plus: ^4.0.0
 
 dev_dependencies:
   flutter_test:

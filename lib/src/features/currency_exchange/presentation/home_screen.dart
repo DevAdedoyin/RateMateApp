@@ -79,6 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             width: size.width * 0.9,
             height: size.height * 0.14,
             child: Card(
+                color: Colors.white70,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7)),
                 // elevation: 5,

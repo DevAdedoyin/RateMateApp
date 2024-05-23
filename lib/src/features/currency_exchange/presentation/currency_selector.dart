@@ -20,20 +20,18 @@ class CurrencySelector extends StatelessWidget {
       height: size.height * 0.30,
       width: size.width * 0.45,
       child: Card(
+        color: Colors.white70,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(state, style: TextStyle(color: Colors.black54)),
+            Text(state, style: const TextStyle(color: Colors.black54)),
             Text(
               currency,
               style: textTheme.headlineMedium,
             ),
             const Icon(Icons.keyboard_arrow_down_rounded),
-            Text(
-              country,
-                style: TextStyle(color: Colors.black54)
-            ),
+            Text(country, style: const TextStyle(color: Colors.black54)),
           ],
         ),
       ),
