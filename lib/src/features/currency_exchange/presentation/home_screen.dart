@@ -1,5 +1,7 @@
+import 'package:currnverter/src/common/modal_sheet.dart';
 import 'package:currnverter/src/constants/colors.dart';
 import 'package:currnverter/src/constants/sizing/gaps.dart';
+import 'package:currnverter/src/features/currency_exchange/data/datasources/currency_codes.dart';
 import 'package:currnverter/src/features/currency_exchange/presentation/currency_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,19 +32,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               width: double.maxFinite,
               height: size.height * 0.29,
               child: Stack(alignment: Alignment.center, children: [
-                const Positioned(
+                Positioned(
                     left: 0,
                     child: CurrencySelector(
                       state: "From",
                       currency: "EUR",
-                      country: "Euro",
+                      country: CurrencyCodes.currencyFlagMap.entries.first.value,
+                      selectCountry: () {
+                        CountryCodePicker.selectCountry(context);
+                      },
                     )),
-                const Positioned(
+                Positioned(
                     right: 0,
                     child: CurrencySelector(
                       state: "To",
                       currency: "USD",
-                      country: "US Dollar",
+                      country: CurrencyCodes.currencyFlagMap.entries.last.value,
+                      selectCountry: () {
+                        CountryCodePicker.selectCountry(context);
+                      },
                     )),
                 Container(
                   width: size.width * 0.17,
@@ -67,7 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                contentPadding: EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.all(10),
                 filled: true,
                 hintText: "Please enter amount",
                 // label: Text("Currency"),
