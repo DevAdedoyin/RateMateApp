@@ -22,13 +22,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
-    TextTheme textTheme = Theme
-        .of(context)
-        .textTheme;
+    Size size = MediaQuery.of(context).size;
+    TextTheme textTheme = Theme.of(context).textTheme;
     final baseCurrency_ = ref.watch(baseCurrency);
+    final targetCurrency_ = ref.watch(targetCurrency);
     return SizedBox(
       child: Column(
         children: [
@@ -48,24 +45,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       selectCountry: () async {
                         Map<String, String> currency = {};
                         currency =
-                        await CountryCodePicker.selectCountry(context);
-                        ref
-                            .read(baseCurrency.notifier)
-                            .state = {
+                            await CountryCodePicker.selectCountry(context);
+                        ref.read(baseCurrency.notifier).state = {
                           "currency": currency["currency"]!,
                           "flag": currency["flag"]!
                         };
-
                       },
                     )),
                 Positioned(
                     right: 0,
                     child: CurrencySelector(
                       state: "To",
-                      currency: "USD",
-                      country: CurrencyCodes.currencyFlagMap.entries.last.value,
-                      selectCountry: () {
-                        CountryCodePicker.selectCountry(context);
+                      currency: targetCurrency_["currency"]!,
+                      country: targetCurrency_["flag"]!,
+                      selectCountry: () async {
+                        Map<String, String> currency = {};
+                        currency =
+                            await CountryCodePicker.selectCountry(context);
+                        ref.read(targetCurrency.notifier).state = {
+                          "currency": currency["currency"]!,
+                          "flag": currency["flag"]!
+                        };
                       },
                     )),
                 Container(
