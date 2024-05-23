@@ -10,6 +10,8 @@ import 'package:go_router/go_router.dart';
 import 'package:onscreen_keyboard/onscreen_keyboard.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
+import '../data/repositories/currency_value_repo.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -19,6 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _textController = TextEditingController();
+  final TextEditingController _virtualKeyboardController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
     final baseCurrency_ = ref.watch(baseCurrency);
     final targetCurrency_ = ref.watch(targetCurrency);
+    final enteredCurrency_ = ref.watch(enteredCurrency);
     return SizedBox(
       child: Column(
         children: [
@@ -86,7 +90,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             width: size.width * 0.9,
             child: TextField(
               // enabled: false,
+              controller: _textController,
               readOnly: true,
+              showCursor: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -98,7 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          verticalGaps(10.0),
+          verticalGaps(7.0),
           SizedBox(
             width: size.width * 0.9,
             height: size.height * 0.14,
@@ -107,51 +113,55 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7)),
                 // elevation: 5,
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Column(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "1 EUR",
-                          style: TextStyle(
-                            color: Colors.black45,
+                          "1 ${baseCurrency_["currency"]}",
+                          style: const TextStyle(
+                            color: Colors.black87,
                             fontStyle: FontStyle.italic,
                           ),
                         ),
+                        Card(
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Icon(
+                            Icons.currency_exchange,
+                            size: 22,
+                          ),
+                        ),
                         Text(
-                          "100",
-                          style: TextStyle(
-                            color: Colors.black45,
-                            fontSize: 14,
+                          "0.87657 ${targetCurrency_["currency"]}",
+                          style: const TextStyle(
+                            color: Colors.black87,
                             fontStyle: FontStyle.italic,
                           ),
-                        )
+                        ),
                       ],
                     ),
-                    Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Icon(
-                        Icons.currency_exchange,
-                        size: 20,
-                      ),
-                    ),
-                    const Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "0.87657 USD",
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                          targetCurrency_["flag"]!,
+                          style: const TextStyle(
+                            // color: Colors.black45,
+                            fontSize: 20,
+                            // fontStyle: FontStyle.italic,
+                          ),
                         ),
-                        Text(
+                        horizontalGaps(5.0),
+                        const Text(
                           "1000400",
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold),
                         )
                       ],
@@ -166,7 +176,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 height: size.height * 0.255,
                 //width: 500,
                 textColor: Colors.black87,
-                textController: _textController,
+                textController: _virtualKeyboardController,
                 //customLayoutKeys: _customLayoutKeys,
                 defaultLayouts: const [
                   VirtualKeyboardDefaultLayouts.Arabic,
@@ -174,7 +184,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
                 //reverseLayout :true,
                 type: VirtualKeyboardType.Numeric,
-                onKeyPress: (val) {}),
+                onKeyPress: (VirtualKeyboardKey val) {
+                  print('onKeyPress callback invoked with key: ${val.text}');
+                  _textController.text += val.text!;
+                  // ref.read(enteredCurrency.notifier).state = _textController.text;
+                  // print('Entered currency state: ${ref.read(enteredCurrency.notifier).state}');
+                }),
           )
           // Expanded(
           //   child: OnscreenKeyboard(
