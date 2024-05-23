@@ -21,7 +21,7 @@ class CurrencySelector extends StatelessWidget {
     return GestureDetector(
       onTap: () => selectCountry(),
       child: SizedBox(
-        height: size.height * 0.30,
+        height: size.height * 0.28,
         width: size.width * 0.45,
         child: Card(
           color: Colors.white70,
@@ -32,12 +32,12 @@ class CurrencySelector extends StatelessWidget {
               Text(state, style: const TextStyle(color: Colors.black54)),
               Text(
                 country,
-                style: const TextStyle(fontSize: 26)
+                style: const TextStyle(fontSize: 28)
               ),
               const Icon(Icons.keyboard_arrow_down_rounded),
               Text(
                 currency,
-                style: const TextStyle(color: Colors.black87, fontSize: 15),
+                style: const TextStyle(color: Colors.black87, fontSize: 16),
               ),
             ],
           ),

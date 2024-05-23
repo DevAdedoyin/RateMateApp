@@ -2,9 +2,11 @@ import 'package:currnverter/src/common/modal_sheet.dart';
 import 'package:currnverter/src/constants/colors.dart';
 import 'package:currnverter/src/constants/sizing/gaps.dart';
 import 'package:currnverter/src/features/currency_exchange/data/datasources/currency_codes.dart';
+import 'package:currnverter/src/features/currency_exchange/data/repositories/conversion_repo.dart';
 import 'package:currnverter/src/features/currency_exchange/presentation/currency_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:onscreen_keyboard/onscreen_keyboard.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
@@ -20,8 +22,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    TextTheme textTheme = Theme.of(context).textTheme;
+    Size size = MediaQuery
+        .of(context)
+        .size;
+    TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
+    final baseCurrency_ = ref.watch(baseCurrency);
     return SizedBox(
       child: Column(
         children: [
@@ -36,10 +43,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     left: 0,
                     child: CurrencySelector(
                       state: "From",
-                      currency: "EUR",
-                      country: CurrencyCodes.currencyFlagMap.entries.first.value,
-                      selectCountry: () {
-                        CountryCodePicker.selectCountry(context);
+                      currency: baseCurrency_["currency"]!,
+                      country: baseCurrency_["flag"]!,
+                      selectCountry: () async {
+                        Map<String, String> currency = {};
+                        currency =
+                        await CountryCodePicker.selectCountry(context);
+                        ref
+                            .read(baseCurrency.notifier)
+                            .state = {
+                          "currency": currency["currency"]!,
+                          "flag": currency["flag"]!
+                        };
+
                       },
                     )),
                 Positioned(
