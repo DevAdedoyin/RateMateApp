@@ -1,5 +1,6 @@
 import 'package:currnverter/src/routing/routes..dart';
 import 'package:currnverter/src/themes/theme.dart';
+import 'package:currnverter/src/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,7 +12,11 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(const ProviderScope(child: CurrencyConversionApp()));
+  runApp(
+     ProviderScope(
+      child: CurrencyConversionApp(),
+    ),
+  );
 }
 
 class CurrencyConversionApp extends ConsumerStatefulWidget {
@@ -23,6 +28,7 @@ class CurrencyConversionApp extends ConsumerStatefulWidget {
 }
 
 class _CurrencyConversionAppState extends ConsumerState<CurrencyConversionApp> {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

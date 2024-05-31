@@ -8,12 +8,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CurrencyConversionDataSource {
   static Future<CurrencyConversionModel> fetchCurrencyData(
-      {required baseRate}) async {
+      {required baseCurrency}) async {
     try {
       final apiKey = dotenv.env['EXCHANGE_RATE_API_KEY'];
 
       String uri =
-          "https://v6.exchangerate-api.com/v6/$apiKey/latest/$baseRate";
+          "https://v6.exchangerate-api.com/v6/$apiKey/latest/$baseCurrency";
       final response = await http.get(Uri.parse(uri));
 
       final responseBody = jsonDecode(response.body);
