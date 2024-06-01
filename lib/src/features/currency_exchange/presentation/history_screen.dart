@@ -12,6 +12,8 @@ class HistoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.only(top: 2, left: 10, right: 10),
       child: Column(
@@ -68,13 +70,13 @@ class HistoryScreen extends ConsumerWidget {
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.all(5),
             child: RichText(
-              text: const TextSpan(
+              text:  TextSpan(
                   style: TextStyle(
-                      color: Colors.black,
+                      color: isDarkMode ? Colors.white  : Colors.black,
                       height: 1.5,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic),
-                  children: [
+                  children: const [
                     TextSpan(text: "Exchange Rate for "),
                     TextSpan(
                         text: "USD ",

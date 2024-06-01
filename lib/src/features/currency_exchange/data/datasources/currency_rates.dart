@@ -9,26 +9,36 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class CurrencyConversionDataSource {
   static Future<CurrencyConversionModel> fetchCurrencyData(
       {required baseCurrency}) async {
+    print(baseCurrency);
     try {
       final apiKey = dotenv.env['EXCHANGE_RATE_API_KEY'];
-
+      print("API KEY: $apiKey");
       String uri =
           "https://v6.exchangerate-api.com/v6/$apiKey/latest/$baseCurrency";
+      // String url = "https://v6.exchangerate-api.com/v6/75f3ce498c6d50d65edd1b42/latest/USD";
+      print("API KEY2: $uri");
       final response = await http.get(Uri.parse(uri));
+      print("API KEY3: $apiKey");
 
+      print("BASE CURRENCY $baseCurrency");
       final responseBody = jsonDecode(response.body);
-
+      print(responseBody);
       if (response.statusCode == 200) {
+
         return CurrencyConversionModel.fromJson(
             responseBody as Map<String, dynamic>);
+
       } else {
+        print("Unabble to fetch data");
         throw HttpException(
           'Unable to fetch currency data. Please wait after some times and try again.',
         );
       }
     } catch (e) {
+      print("EXCEPTION ${e.toString()}");
       throw HttpException(
-        e.toString(),
+
+        e.toString()
       );
     }
   }

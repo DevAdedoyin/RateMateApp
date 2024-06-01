@@ -38,6 +38,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final navPageNum = ref.watch(navPage);
     TextTheme textTheme = Theme.of(context).textTheme;
     final themeNotifier = ref.read(themeProvider);
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
         appBar: AppBar(
@@ -71,7 +72,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           },
           backgroundColor: Colors.black12,
           elevation: 0,
-          selectedItemColor: Colors.black,
+          selectedItemColor: isDarkMode ? Colors.white : Colors.black,
           unselectedLabelStyle: const TextStyle(fontStyle: FontStyle.italic),
           // selectedFontSize: 16,
           // showSelectedLabels: false,

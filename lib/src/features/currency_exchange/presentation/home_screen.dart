@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:onscreen_keyboard/onscreen_keyboard.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../themes/theme_provider.dart';
 import '../data/datasources/currency_rates.dart';
 import '../data/repositories/currency_value_repo.dart';
@@ -33,6 +33,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final baseCurrency_ = ref.watch(baseCurrency);
     final targetCurrency_ = ref.watch(targetCurrency);
     final enteredCurrency_ = ref.watch(enteredCurrency);
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return SizedBox(
       child: Column(
@@ -51,36 +52,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       builder: (context, snap) {
                         if (snap.connectionState == ConnectionState.waiting) {
                           return Container(
-                            alignment: Alignment.center,
+                            // alignment: Alignment.center,
+                            height: size.height * 0.28,
                             width: size.width * 0.45,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator()),
-                                verticalGaps(5.0),
-                                const Text("Fetching Currencies")
-                              ],
+                            child: Card(
+                              color: Colors.white70,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.primaryColors,
+                                      )),
+                                  verticalGaps(15.0),
+                                  const Text("Fetching Currencies")
+                                ],
+                              ),
                             ),
                           );
+                        } else if (!snap.hasData) {
+                          return GestureDetector(
+                            onTap: (){
+                              setState(() {
+                              });
+                            },
+                            child: Container(
+                              // alignment: Alignment.center,
+                              height: size.height * 0.28,
+                              width: size.width * 0.45,
+                              child: Card(
+                                color: Colors.white70,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child:
+                                            Icon(Icons.currency_exchange)),
+                                    verticalGaps(10.0),
+                                    const Text("Please try again")
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return CurrencySelector(
+                            state: "From",
+                            currency: baseCurrency_["currency"]!,
+                            country: baseCurrency_["flag"]!,
+                            selectCountry: () async {
+                              Map<String, String> currency = {};
+                              currency = await CountryCodePicker.selectCountry(
+                                  context);
+                              ref.read(baseCurrency.notifier).state = {
+                                "currency": currency["currency"]!,
+                                "flag": currency["flag"]!
+                              };
+                            },
+                          );
                         }
-                        return CurrencySelector(
-                          state: "From",
-                          currency: baseCurrency_["currency"]!,
-                          country: baseCurrency_["flag"]!,
-                          selectCountry: () async {
-                            Map<String, String> currency = {};
-                            currency =
-                                await CountryCodePicker.selectCountry(context);
-                            ref.read(baseCurrency.notifier).state = {
-                              "currency": currency["currency"]!,
-                              "flag": currency["flag"]!
-                            };
-                          },
-                        );
                       },
                       future: CurrencyConversionDataSource.fetchCurrencyData(
                           baseCurrency: baseCurrency_["currency"]),
@@ -106,7 +142,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   height: size.width * 0.17,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Colors.white),
+                      color: isDarkMode ? Colors.black : Colors.white),
                   child: const Icon(
                     Icons.currency_exchange,
                     size: 30,
@@ -224,7 +260,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: VirtualKeyboard(
                 height: size.height * 0.255,
                 //width: 500,
-                textColor: Colors.black87,
+                textColor: isDarkMode ? Colors.white : Colors.black87,
                 textController: _virtualKeyboardController,
                 //customLayoutKeys: _customLayoutKeys,
                 defaultLayouts: const [
