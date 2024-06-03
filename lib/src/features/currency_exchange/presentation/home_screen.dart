@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final TextEditingController _textController = TextEditingController();
+  String _textController = "";
   final TextEditingController _virtualKeyboardController =
       TextEditingController();
 
@@ -75,9 +75,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           );
                         } else if (!snap.hasData) {
                           return GestureDetector(
-                            onTap: (){
-                              setState(() {
-                              });
+                            onTap: () {
+                              setState(() {});
                             },
                             child: Container(
                               // alignment: Alignment.center,
@@ -92,8 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     const SizedBox(
                                         height: 20,
                                         width: 20,
-                                        child:
-                                            Icon(Icons.currency_exchange)),
+                                        child: Icon(Icons.currency_exchange)),
                                     verticalGaps(10.0),
                                     const Text("Please try again")
                                   ],
@@ -152,42 +150,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
           SizedBox(
-            width: size.width * 0.87,
-            child: TextField(
-              // enabled: false,
-              controller: _textController,
-              readOnly: true,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              showCursor: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  // gapPadding: 3
+            width: size.width,
+            child: GestureDetector(
+              onTap: () {},
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      // Add space around the prefix
+                      child: Text(
+                        baseCurrency_["flag"]!,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    Text(_textController),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      // Add space around the suffix
+                      child: Text(
+                        baseCurrency_["currency"]!,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
-
-                contentPadding: const EdgeInsets.all(10),
-                filled: true,
-                hintText: "Please enter amount",
-                prefix: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  // Add space around the prefix
-                  child: Text(
-                    baseCurrency_["flag"]!,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ),
-                suffix: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  // Add space around the suffix
-                  child: Text(
-                    baseCurrency_["currency"]!,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-                // label: Text("Currency"),
               ),
             ),
           ),
+          // SizedBox(
+          //   width: size.width * 0.87,
+          //   child: TextField(
+          //     // enabled: false,
+          //     controller: _textController,
+          //     readOnly: true,
+          //     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          //     showCursor: true,
+          //     decoration: InputDecoration(
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(10),
+          //         // gapPadding: 3
+          //       ),
+          //
+          //       contentPadding: const EdgeInsets.all(10),
+          //       filled: true,
+          //       hintText: "Please enter amount",
+          //       prefix: Padding(
+          //         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          //         // Add space around the prefix
+          //         child: Text(
+          //           baseCurrency_["flag"]!,
+          //           style: const TextStyle(fontSize: 20),
+          //         ),
+          //       ),
+          //       suffix: Padding(
+          //         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          //         // Add space around the suffix
+          //         child: Text(
+          //           baseCurrency_["currency"]!,
+          //           style: const TextStyle(fontSize: 16),
+          //         ),
+          //       ),
+          //       // label: Text("Currency"),
+          //     ),
+          //   ),
+          // ),
           size.height < 601 ? verticalGaps(2.0) : verticalGaps(7.0),
           SizedBox(
             width: size.width * 0.9,
@@ -272,21 +299,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onKeyPress: (VirtualKeyboardKey val) {
                   print('onKeyPress callback invoked with key: ${val.text}');
                   if (val.action == VirtualKeyboardKeyAction.Backspace) {
-                    if (_textController.text.isNotEmpty) {
-                      _textController.text = _textController.text
-                          .substring(0, _textController.text.length - 1);
+                    if (_textController.isNotEmpty) {
+                      _textController = _textController
+                          .substring(0, _textController.length - 1);
                     }
                   } else if (val.text != null) {
-                    _textController.text += val.text!;
+                    _textController += val.text!;
                   }
 
                   // Update the state with the current text
                   ref.read(enteredCurrency.notifier).state =
-                      _textController.text;
+                      _textController;
 
                   // Parse the text to double, perform multiplication, and convert back to string
                   double enteredValue =
-                      double.tryParse(_textController.text) ?? 0.0;
+                      double.tryParse(_textController) ?? 0.0;
                   double convertedValue = enteredValue * 0.79;
                   ref.read(enteredCurrency.notifier).state =
                       convertedValue.toString();
@@ -295,18 +322,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       'Entered currency state: ${ref.read(enteredCurrency.notifier).state}');
                 }),
           )
-          // Expanded(
-          //   child: OnscreenKeyboard(
-          //     value: 'atha',
-          //     backgroundColor: Colors.blue,
-          //     buttonColor: Colors.amber,
-          //     focusColor: Colors.red,
-          //     onChanged: (txt) {},
-          //     initialCase: InitialCase.NUMERIC,
-          //   ),
-          // ),
         ],
       ),
     );
   }
 }
+
+
