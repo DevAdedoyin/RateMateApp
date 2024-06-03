@@ -27,6 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _virtualKeyboardController =
       TextEditingController();
   late Future<CurrencyConversionModel> _currencyDataFuture;
+  Map<String, dynamic> conversion_rates = {};
 
   @override
   void initState() {
@@ -42,7 +43,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  Map<String, dynamic> conversion_rates = {};
+  void _updateConversionValue() {
+    final targetCurrency_ = ref.read(targetCurrency);
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        ref.read(targetValue.notifier).state =
+            conversion_rates[targetCurrency_["currency"]];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +145,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 "flag": currency["flag"]!
                               };
                               _updateCurrencyDataFuture();
-                              ref.read(targetValue.notifier).state =
-                                  conversion_rates[
-                                      "${targetCurrency_["currency"]}"];
+                              _updateConversionValue();
                             },
                           );
                         }
