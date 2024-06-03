@@ -30,10 +30,7 @@ class CurrencySelector extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(state, style: const TextStyle(color: Colors.black54)),
-              Text(
-                country,
-                style: const TextStyle(fontSize: 28)
-              ),
+              Text(country, style: const TextStyle(fontSize: 40)),
               const Icon(Icons.keyboard_arrow_down_rounded),
               Text(
                 currency,

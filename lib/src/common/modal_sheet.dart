@@ -1,4 +1,5 @@
 import 'package:currnverter/src/constants/colors.dart';
+import 'package:currnverter/src/features/currency_exchange/domain/currency_model.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../features/currency_exchange/data/datasources/currency_codes.dart';
 
 class CountryCodePicker {
-  static Future<Map<String, String>> selectCountry(BuildContext context) async {
+  static Future<Map<String, String>> selectCountry(BuildContext context,
+      {Future<CurrencyConversionModel>? fetchCurreny}) async {
     Map<String, String> selectedCurrency = {"currency": "", "flag": ""};
     final date = await showModalBottomSheet(
         context: context,
@@ -31,10 +33,11 @@ class CountryCodePicker {
                         "flag": CurrencyCodes.currencyFlagMap.values
                             .elementAt(index)
                       };
+                      fetchCurreny;
                       context.pop();
                     },
                   ),
-                  Divider()
+                  const Divider()
                 ],
               );
             },
