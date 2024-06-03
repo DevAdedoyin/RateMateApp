@@ -5,3 +5,5 @@ final baseCurrency = StateProvider<Map<String, String>>(
 
 final targetCurrency = StateProvider<Map<String, String>>(
     (ref) => {"currency": "GBP", "flag": "🇬🇧"});
+
+final targetValue = StateProvider<double>((ref) => 0.79);

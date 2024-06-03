@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   final TextEditingController _virtualKeyboardController =
       TextEditingController();
   late Future<CurrencyConversionModel> _currencyDataFuture;
@@ -42,12 +42,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  Map<String, dynamic> conversion_rates = {};
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
     final baseCurrency_ = ref.watch(baseCurrency);
     final targetCurrency_ = ref.watch(targetCurrency);
+    var targetValue_ = ref.watch(targetValue);
     final enteredCurrency_ = ref.watch(enteredCurrency);
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -116,11 +119,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           );
                         } else {
+                          conversion_rates = snapshot.data!.conversionRates;
+                          print(conversion_rates);
                           return CurrencySelector(
                             state: "From",
                             currency: baseCurrency_["currency"]!,
                             country: baseCurrency_["flag"]!,
                             selectCountry: () async {
+                              _textController.clear();
+                              _virtualKeyboardController.clear();
                               Map<String, String> currency = {};
                               currency = await CountryCodePicker.selectCountry(
                                   context);
@@ -129,6 +136,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 "flag": currency["flag"]!
                               };
                               _updateCurrencyDataFuture();
+                              ref.read(targetValue.notifier).state =
+                                  conversion_rates[
+                                      "${targetCurrency_["currency"]}"];
                             },
                           );
                         }
@@ -148,6 +158,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           "currency": currency["currency"]!,
                           "flag": currency["flag"]!
                         };
+                        ref.read(targetValue.notifier).state =
+                            conversion_rates["${currency["currency"]}"];
                       },
                     )),
                 Container(
@@ -228,7 +240,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "0.87657 ${targetCurrency_["currency"]}",
+                          "${targetValue_.toDouble().toStringAsFixed(2)} ${targetCurrency_["currency"]}",
                           style: const TextStyle(
                             color: Colors.black87,
                             fontStyle: FontStyle.italic,
@@ -258,7 +270,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 )),
           ),
-          Spacer(),
+          const Spacer(),
           Container(
             color: Colors.black12,
             child: VirtualKeyboard(
@@ -287,9 +299,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   // Parse the text to double, perform multiplication, and convert back to string
                   double enteredValue =
                       double.tryParse(_textController.text) ?? 0.0;
-                  double convertedValue = enteredValue * 0.79;
+                  double convertedValue = enteredValue * targetValue_;
                   ref.read(enteredCurrency.notifier).state =
-                      convertedValue.toString();
+                      convertedValue.toStringAsFixed(2).toString();
                 }),
           )
         ],

@@ -13,6 +13,7 @@ class CountryCodePicker {
     final date = await showModalBottomSheet(
         context: context,
         enableDrag: true,
+        isDismissible: false,
         builder: (_) {
           return ListView.builder(
             itemBuilder: (_, index) {
