@@ -2,17 +2,60 @@ import 'package:currnverter/src/constants/colors.dart';
 import 'package:currnverter/src/constants/sizing/gaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:intl/intl.dart';
 import '../../../common/date_picker.dart';
+import '../data/repositories/history_repo.dart';
 
-class HistoryScreen extends ConsumerWidget {
+
+class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends ConsumerState<HistoryScreen> {
+
+  String historicDate = "";
+  String historicTime = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    generateDateTime();
+  }
+
+  void generateDateTime(){
+    // Get the current date and time
+    DateTime now = DateTime.now();
+
+    // Subtract one day to get yesterday's date
+    DateTime yesterday = now.subtract(Duration(days: 1));
+
+    // Format the date as "Thursday, May 12, 2024"
+    String formattedDate = DateFormat('EEEE, MMMM d, y').format(yesterday);
+
+    // Format the time as "00:00 AM GMT"
+    // Assuming you want a specific time (10:00 AM) instead of the current time
+    DateTime specificTimeYesterday = DateTime(yesterday.year, yesterday.month, yesterday.day, 00, 0);
+    String formattedTime = DateFormat('h:mm a').format(specificTimeYesterday) + ' GMT';
+
+    // Print the formatted date and time
+    print('date: $formattedDate,');
+    print('time: $formattedTime');
+
+    historicDate = formattedDate;
+    historicTime = formattedTime;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final selectedDate_ = ref.watch(selectedDate);
+    final selectedTime_ = ref.watch(selectedTime);
 
     return Padding(
       padding: const EdgeInsets.only(top: 2, left: 10, right: 10),
@@ -37,8 +80,11 @@ class HistoryScreen extends ConsumerWidget {
                       backgroundColor:
                           MaterialStateProperty.all(AppColors.primaryColors),
                     ),
-                    onPressed: () {
-                      CurrencyDatePicker.selectDate(context);
+                    onPressed: () async {
+                      Map<String, String> selectedDateTime = {"date": "", "time": ""};
+                      selectedDateTime = await CurrencyDatePicker.selectDate(context);
+                      ref.read(selectedDate.notifier).state = selectedDateTime["date"]!;
+                      ref.read(selectedTime.notifier).state = selectedDateTime["time"]!;
                     },
                     icon: const Icon(
                       Icons.calendar_month,
@@ -76,25 +122,25 @@ class HistoryScreen extends ConsumerWidget {
                       height: 1.5,
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic),
-                  children: const [
-                    TextSpan(text: "Exchange Rate for "),
-                    TextSpan(
+                  children:  [
+                    const TextSpan(text: "Exchange rate for "),
+                    const  TextSpan(
                         text: "USD ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontStyle: FontStyle.normal)),
-                    TextSpan(text: "to Other Currencies as of "),
+                    const   TextSpan(text: "to other currencies as of "),
                     TextSpan(
-                        text: "Thursday, May 12, 2024, ",
-                        style: TextStyle(
+                        text: "${selectedDate_ == "" ? historicDate : selectedDate_}, ",
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontStyle: FontStyle.normal)),
-                    TextSpan(text: "at "),
+                    const   TextSpan(text: "at "),
                     TextSpan(
-                        text: "10:00 AM GMT",
-                        style: TextStyle(
+                        text: selectedTime_ == "" ? historicTime : selectedTime_,
+                        style:const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontStyle: FontStyle.normal))
