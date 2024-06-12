@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common/date_picker.dart';
+import '../../../common/modal_sheet.dart';
 import '../data/repositories/history_repo.dart';
-
 
 class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
@@ -15,7 +15,6 @@ class HistoryScreen extends ConsumerStatefulWidget {
 }
 
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
-
   String historicDate = "";
   String historicTime = "";
 
@@ -26,7 +25,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     generateDateTime();
   }
 
-  void generateDateTime(){
+  void generateDateTime() {
     // Get the current date and time
     DateTime now = DateTime.now();
 
@@ -38,8 +37,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
     // Format the time as "00:00 AM GMT"
     // Assuming you want a specific time (10:00 AM) instead of the current time
-    DateTime specificTimeYesterday = DateTime(yesterday.year, yesterday.month, yesterday.day, 00, 0);
-    String formattedTime = DateFormat('h:mm a').format(specificTimeYesterday) + ' GMT';
+    DateTime specificTimeYesterday =
+        DateTime(yesterday.year, yesterday.month, yesterday.day, 00, 0);
+    String formattedTime =
+        DateFormat('h:mm a').format(specificTimeYesterday) + ' GMT';
 
     // Print the formatted date and time
     print('date: $formattedDate,');
@@ -56,6 +57,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final selectedDate_ = ref.watch(selectedDate);
     final selectedTime_ = ref.watch(selectedTime);
+    final historyBaseCurrency_ = ref.watch(historyBaseCurrency);
 
     return Padding(
       padding: const EdgeInsets.only(top: 2, left: 10, right: 10),
@@ -81,10 +83,16 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           MaterialStateProperty.all(AppColors.primaryColors),
                     ),
                     onPressed: () async {
-                      Map<String, String> selectedDateTime = {"date": "", "time": ""};
-                      selectedDateTime = await CurrencyDatePicker.selectDate(context);
-                      ref.read(selectedDate.notifier).state = selectedDateTime["date"]!;
-                      ref.read(selectedTime.notifier).state = selectedDateTime["time"]!;
+                      Map<String, String> selectedDateTime = {
+                        "date": "",
+                        "time": ""
+                      };
+                      selectedDateTime =
+                          await CurrencyDatePicker.selectDate(context);
+                      ref.read(selectedDate.notifier).state =
+                          selectedDateTime["date"]!;
+                      ref.read(selectedTime.notifier).state =
+                          selectedDateTime["time"]!;
                     },
                     icon: const Icon(
                       Icons.calendar_month,
@@ -99,7 +107,14 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(AppColors.primaryColors),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      Map<String, String> currency = {};
+                      currency = await CountryCodePicker.selectCountry(context);
+                      ref.read(historyBaseCurrency.notifier).state = {
+                        "currency": currency["currency"]!,
+                        "flag": currency["flag"]!
+                      };
+                    },
                     icon: const Icon(
                       Icons.money,
                       color: Colors.white,
@@ -116,31 +131,34 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.all(5),
             child: RichText(
-              text:  TextSpan(
+              text: TextSpan(
                   style: TextStyle(
-                      color: isDarkMode ? Colors.white  : Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                       height: 1.5,
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic),
-                  children:  [
+                  children: [
                     const TextSpan(text: "Exchange rate for "),
-                    const  TextSpan(
-                        text: "USD ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontStyle: FontStyle.normal)),
-                    const   TextSpan(text: "to other currencies as of "),
                     TextSpan(
-                        text: "${selectedDate_ == "" ? historicDate : selectedDate_}, ",
+                        text:
+                            "${historyBaseCurrency_['currency']} ${historyBaseCurrency_['flag']} ",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontStyle: FontStyle.normal)),
-                    const   TextSpan(text: "at "),
+                    const TextSpan(text: "to other currencies as of "),
                     TextSpan(
-                        text: selectedTime_ == "" ? historicTime : selectedTime_,
-                        style:const TextStyle(
+                        text:
+                            "${selectedDate_ == "" ? historicDate : selectedDate_}, ",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                            fontStyle: FontStyle.normal)),
+                    const TextSpan(text: "at "),
+                    TextSpan(
+                        text:
+                            selectedTime_ == "" ? historicTime : selectedTime_,
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontStyle: FontStyle.normal))
@@ -168,19 +186,19 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                               child: Container(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "USD",
+                                  "${historyBaseCurrency_['flag']}",
                                   textAlign: TextAlign.center,
-                                  style: textTheme.bodyMedium,
+                                  style: const TextStyle(fontSize: 22),
                                 ),
                               )),
                         ),
                         title: const Text("0.76585"),
-                        subtitle: const Text("1USD = GBP 0.7685"),
+                        subtitle:  Text("${historyBaseCurrency_['currency']} 1 = GBP 0.7685"),
                         trailing: SizedBox(
                           height: 47,
                           width: 47,
                           child: Card(
-                            color: Colors.white70,
+                              color: Colors.white70,
                               elevation: 5,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
