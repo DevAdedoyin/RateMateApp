@@ -1,5 +1,6 @@
 import 'package:currnverter/src/constants/colors.dart';
 import 'package:currnverter/src/constants/sizing/gaps.dart';
+import 'package:currnverter/src/utility/datetime_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +56,6 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     String formattedDate = DateFormat('EEEE, MMMM d, y').format(yesterday);
 
     // Format the time as "00:00 AM GMT"
-    // Assuming you want a specific time (10:00 AM) instead of the current time
     DateTime specificTimeYesterday =
         DateTime(yesterday.year, yesterday.month, yesterday.day, 00, 0);
     String formattedTime =
@@ -77,6 +77,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final selectedDate_ = ref.watch(selectedDate);
     final selectedTime_ = ref.watch(selectedTime);
     final historyBaseCurrency_ = ref.watch(historyBaseCurrency);
+
+    String parsedDateTime = DateTimeUtils.timeAgo(
+        selectedDate_ == "" ? historicDate : selectedDate_);
 
     return Padding(
       padding: const EdgeInsets.only(top: 2, left: 10, right: 10),
@@ -228,7 +231,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                             ),
                                           )),
                                     ),
-                                    // title:  Text("${snap.data?.currencies[index].value.toStringAsFixed(2)}"),
+                                    subtitle: Text(parsedDateTime, style: const TextStyle(fontSize: 12.5, fontStyle: FontStyle.italic),),
                                     title: Text(
                                         "1 ${historyBaseCurrency_['currency']} = ${snap.data?.currencies[index].value.toStringAsFixed(2)} ${snap.data?.currencies[index].code}"),
                                     trailing: SizedBox(
@@ -242,10 +245,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                                   BorderRadius.circular(50)),
                                           child: Container(
                                             alignment: Alignment.center,
-                                            child:  Text(
+                                            child: Text(
                                               "${snap.data?.currencies[index].code}",
                                               textAlign: TextAlign.center,
-                                              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
                                             ),
                                           )),
                                     ),
