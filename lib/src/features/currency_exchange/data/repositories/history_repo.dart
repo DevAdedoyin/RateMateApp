@@ -4,10 +4,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final historyBaseCurrency = StateProvider<Map<String, String>>(
-        (ref) => {"currency": "USD", "flag": "🇺🇸"});
+        (ref) =>{"currency": "GBP", "flag": "🇬🇧"} );
 
 final historyTargetCurrencies = StateProvider<Map<String, String>>(
-        (ref) => {"currency": "GBP", "flag": "🇬🇧"});
+        (ref) => {"currency": "USD", "flag": "🇺🇸"});
 
 final targetValues = StateProvider<double>((ref) => 0.79);
 

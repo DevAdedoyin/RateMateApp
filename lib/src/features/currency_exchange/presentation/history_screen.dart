@@ -5,7 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common/date_picker.dart';
 import '../../../common/modal_sheet.dart';
+import '../data/datasources/currency_rates.dart';
 import '../data/repositories/history_repo.dart';
+import '../domain/currency_history_model.dart';
+import '../domain/currency_model.dart';
+import 'package:shimmer/shimmer.dart';
+
+import 'connection_loader_widget.dart';
 
 class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
@@ -17,12 +23,25 @@ class HistoryScreen extends ConsumerStatefulWidget {
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   String historicDate = "";
   String historicTime = "";
+  late Future<HistoricalCurrencyData> _historyCurrencyDataFuture;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     generateDateTime();
+    _updateHistoryCurrencyDataFuture();
+  }
+
+  void _updateHistoryCurrencyDataFuture() {
+    final baseCurrency_ = ref.read(historyBaseCurrency);
+    setState(() {
+      _historyCurrencyDataFuture =
+          CurrencyConversionDataSource.fetchHistoricalData(
+        baseCurrency: baseCurrency_["currency"],
+        date: historicDate,
+      );
+    });
   }
 
   void generateDateTime() {
@@ -30,7 +49,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     DateTime now = DateTime.now();
 
     // Subtract one day to get yesterday's date
-    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateTime yesterday = now.subtract(const Duration(days: 1));
 
     // Format the date as "Thursday, May 12, 2024"
     String formattedDate = DateFormat('EEEE, MMMM d, y').format(yesterday);
@@ -40,7 +59,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     DateTime specificTimeYesterday =
         DateTime(yesterday.year, yesterday.month, yesterday.day, 00, 0);
     String formattedTime =
-        DateFormat('h:mm a').format(specificTimeYesterday) + ' GMT';
+        '${DateFormat('h:mm a').format(specificTimeYesterday)} GMT';
 
     // Print the formatted date and time
     print('date: $formattedDate,');
@@ -114,6 +133,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                         "currency": currency["currency"]!,
                         "flag": currency["flag"]!
                       };
+                      CurrencyConversionDataSource.fetchHistoricalData(
+                        baseCurrency: currency["currency"],
+                        date: ref.read(selectedDate.notifier).state,
+                      );
                     },
                     icon: const Icon(
                       Icons.money,
@@ -166,56 +189,73 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             ),
           ),
           Expanded(
-              child: SizedBox(
-            child: ListView.builder(
-                itemCount: 8,
-                itemBuilder: (_, index) {
-                  return SizedBox(
-                    child: Card(
-                      color: Colors.black12,
-                      elevation: 0,
-                      child: ListTile(
-                        leading: SizedBox(
-                          height: 45,
-                          width: 45,
-                          child: Card(
-                              elevation: 5,
-                              color: Colors.white70,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "${historyBaseCurrency_['flag']}",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 22),
+              child: FutureBuilder<HistoricalCurrencyData>(
+                  future: _historyCurrencyDataFuture,
+                  builder: (context, snap) {
+                    print("Snapshot ${snap.data}");
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return const ConnectionShimmerLoader();
+                    } else if (!snap.hasData &&
+                        snap.connectionState != ConnectionState.waiting) {
+                      return const ConnectionShimmerLoader();
+                    } else {
+                      print("DATA ${snap.data}}");
+                      return SizedBox(
+                        child: ListView.builder(
+                            itemCount: snap.data?.currencies.length,
+                            itemBuilder: (_, index) {
+                              return SizedBox(
+                                child: Card(
+                                  color: Colors.black12,
+                                  elevation: 0,
+                                  child: ListTile(
+                                    leading: SizedBox(
+                                      height: 45,
+                                      width: 45,
+                                      child: Card(
+                                          elevation: 5,
+                                          color: AppColors.secondaryColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50)),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "${historyBaseCurrency_['flag']}",
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  const TextStyle(fontSize: 20),
+                                            ),
+                                          )),
+                                    ),
+                                    // title:  Text("${snap.data?.currencies[index].value.toStringAsFixed(2)}"),
+                                    title: Text(
+                                        "1 ${historyBaseCurrency_['currency']} = ${snap.data?.currencies[index].value.toStringAsFixed(2)} ${snap.data?.currencies[index].code}"),
+                                    trailing: SizedBox(
+                                      height: 47,
+                                      width: 47,
+                                      child: Card(
+                                          color: AppColors.secondaryColor,
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50)),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child:  Text(
+                                              "${snap.data?.currencies[index].code}",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                            ),
+                                          )),
+                                    ),
+                                  ),
                                 ),
-                              )),
-                        ),
-                        title: const Text("0.76585"),
-                        subtitle:  Text("${historyBaseCurrency_['currency']} 1 = GBP 0.7685"),
-                        trailing: SizedBox(
-                          height: 47,
-                          width: 47,
-                          child: Card(
-                              color: Colors.white70,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "GBP",
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.bodyMedium,
-                                ),
-                              )),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          ))
+                              );
+                            }),
+                      );
+                    }
+                  }))
         ],
       ),
     );

@@ -47,6 +47,7 @@ class CurrencyConversionDataSource {
       final responseBody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        print("HISTORY RESPONSE  $responseBody");
         return HistoricalCurrencyData.fromJson(
             responseBody as Map<String, dynamic>);
       } else {
