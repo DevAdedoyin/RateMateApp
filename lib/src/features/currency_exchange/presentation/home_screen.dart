@@ -219,9 +219,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             width: size.width * 0.9,
             height: size.height * 0.14,
             child: Card(
-                color: Colors.white70,
+                color: isDarkMode ? Colors.black12 : Colors.white70,
+                elevation: 3,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -231,8 +232,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       children: [
                         Text(
                           "1 ${baseCurrency_["currency"]}",
-                          style: const TextStyle(
-                            color: Colors.black87,
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.white70 : Colors.black87,
                             fontStyle: FontStyle.italic,
                           ),
                         ),
@@ -248,8 +249,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         Text(
                           "${targetValue_.toDouble().toStringAsFixed(2)} ${targetCurrency_["currency"]}",
-                          style: const TextStyle(
-                            color: Colors.black87,
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.white70 : Colors.black87,
                             fontStyle: FontStyle.italic,
                           ),
                         ),
@@ -267,8 +268,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         horizontalGaps(5.0),
                         Text(
                           enteredCurrency_,
-                          style: const TextStyle(
-                              color: Colors.black,
+                          style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.black,
                               fontSize: 17,
                               fontWeight: FontWeight.bold),
                         )

@@ -122,6 +122,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final selectedTime_ = ref.watch(selectedTime);
     final historyBaseCurrency_ = ref.watch(historyBaseCurrency);
 
+
     String parsedDateTime = DateTimeUtils.timeAgo(
         selectedDate_ == "" ? historicDate : selectedDate_);
 
@@ -249,8 +250,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                     final currency = _currenciesList[index];
                     return SizedBox(
                       child: Card(
-                        color: Colors.black12,
-                        elevation: 0,
+                        color: isDarkMode ? Colors.black12 : Colors.black12,
+                        elevation: 3,
                         child: ListTile(
                           leading: SizedBox(
                             height: 45,

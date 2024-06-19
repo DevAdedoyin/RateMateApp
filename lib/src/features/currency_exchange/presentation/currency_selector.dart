@@ -18,23 +18,25 @@ class CurrencySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => selectCountry(),
       child: SizedBox(
         height: size.height * 0.28,
         width: size.width * 0.45,
         child: Card(
-          color: Colors.white70,
+          color: isDarkMode ? Colors.black12 : Colors.white70,
+          elevation: 3,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(state, style: const TextStyle(color: Colors.black54)),
+              Text(state, style:  TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54)),
               Text(country, style: const TextStyle(fontSize: 40)),
               const Icon(Icons.keyboard_arrow_down_rounded),
               Text(
                 currency,
-                style: const TextStyle(color: Colors.black87, fontSize: 16),
+                style:  TextStyle(color: isDarkMode ? Colors.white : Colors.black87, fontSize: 16),
               ),
             ],
           ),
