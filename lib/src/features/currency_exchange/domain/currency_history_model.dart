@@ -19,7 +19,7 @@ class HistoricalCurrencyData {
       print("keys ${entry.value}");
       Map<String, dynamic> currData = entry.value;
       return Currencies.fromJson(currData);
-    }).take(20).toList();
+    }).toList();
 
     print("CURRENCY LIST $currenciesList");
 
@@ -36,7 +36,7 @@ class Currencies {
 
   factory Currencies.fromJson(Map<String, dynamic> data) {
     final String code = data["code"];
-    final double value = data["value"];
+    final double value = data["value"].toDouble();
 
     return Currencies(code: code, value: value);
   }

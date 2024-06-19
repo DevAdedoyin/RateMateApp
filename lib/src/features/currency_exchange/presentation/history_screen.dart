@@ -25,25 +25,69 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   String historicDate = "";
   String historicTime = "";
   late Future<HistoricalCurrencyData> _historyCurrencyDataFuture;
+  static const _pageSize = 20; // Number of items to fetch per page
+  int _currentPage = 0; // Current page index
+  bool _loading = false; // Loading indicator
+
+  List<Currencies> _currenciesList = []; // List to hold fetched currencies
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     generateDateTime();
-    _updateHistoryCurrencyDataFuture();
+    // _updateHistoryCurrencyDataFuture();
+    _loadCurrencies();
   }
 
-  void _updateHistoryCurrencyDataFuture() {
-    final baseCurrency_ = ref.read(historyBaseCurrency);
+  Future<void> _loadCurrencies() async {
+    if (_loading) return;
+
     setState(() {
-      _historyCurrencyDataFuture =
-          CurrencyConversionDataSource.fetchHistoricalData(
-        baseCurrency: baseCurrency_["currency"],
-        date: historicDate,
-      );
+      _loading = true;
     });
+
+    try {
+      final baseCurrency = ref.read(historyBaseCurrency)["currency"];
+      final newCurrencies =
+          await CurrencyConversionDataSource.fetchHistoricalData(
+        baseCurrency: baseCurrency,
+        date: historicDate,
+        pageKey: _currentPage,
+        pageSize: _pageSize,
+      );
+
+      setState(() {
+        _currenciesList.addAll(newCurrencies.currencies);
+        _loading = false;
+        _currentPage++;
+      });
+    } catch (e) {
+      setState(() {
+        _loading = false;
+      });
+      // Handle error fetching data
+      print('Error fetching currencies: $e');
+      // Optionally show error message to user
+    }
   }
+
+  Future<void> _refreshCurrencies() async {
+    _currentPage = 0;
+    _currenciesList.clear();
+    await _loadCurrencies();
+  }
+
+  // void _updateHistoryCurrencyDataFuture() {
+  //   final baseCurrency_ = ref.read(historyBaseCurrency);
+  //   setState(() {
+  //     _historyCurrencyDataFuture =
+  //         CurrencyConversionDataSource.fetchHistoricalData(
+  //       baseCurrency: baseCurrency_["currency"],
+  //       date: historicDate,
+  //     );
+  //   });
+  // }
 
   void generateDateTime() {
     // Get the current date and time
@@ -115,6 +159,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                           selectedDateTime["date"]!;
                       ref.read(selectedTime.notifier).state =
                           selectedDateTime["time"]!;
+                      // _updateHistoryCurrencyDataFuture();
+                      _refreshCurrencies();
                     },
                     icon: const Icon(
                       Icons.calendar_month,
@@ -136,10 +182,12 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                         "currency": currency["currency"]!,
                         "flag": currency["flag"]!
                       };
-                      CurrencyConversionDataSource.fetchHistoricalData(
-                        baseCurrency: currency["currency"],
-                        date: ref.read(selectedDate.notifier).state,
-                      );
+                      // CurrencyConversionDataSource.fetchHistoricalData(
+                      //   baseCurrency: currency["currency"],
+                      //   date: ref.read(selectedDate.notifier).state,
+                      // );
+                      // _updateHistoryCurrencyDataFuture();
+                      _refreshCurrencies();
                     },
                     icon: const Icon(
                       Icons.money,
@@ -192,76 +240,97 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             ),
           ),
           Expanded(
-              child: FutureBuilder<HistoricalCurrencyData>(
-                  future: _historyCurrencyDataFuture,
-                  builder: (context, snap) {
-                    print("Snapshot ${snap.data}");
-                    if (snap.connectionState == ConnectionState.waiting) {
-                      return const ConnectionShimmerLoader();
-                    } else if (!snap.hasData &&
-                        snap.connectionState != ConnectionState.waiting) {
-                      return const ConnectionShimmerLoader();
-                    } else {
-                      print("DATA ${snap.data}}");
-                      return SizedBox(
-                        child: ListView.builder(
-                            itemCount: snap.data?.currencies.length,
-                            itemBuilder: (_, index) {
-                              return SizedBox(
-                                child: Card(
-                                  color: Colors.black12,
-                                  elevation: 0,
-                                  child: ListTile(
-                                    leading: SizedBox(
-                                      height: 45,
-                                      width: 45,
-                                      child: Card(
-                                          elevation: 5,
-                                          color: AppColors.secondaryColor,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50)),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "${historyBaseCurrency_['flag']}",
-                                              textAlign: TextAlign.center,
-                                              style:
-                                                  const TextStyle(fontSize: 20),
-                                            ),
-                                          )),
-                                    ),
-                                    subtitle: Text(parsedDateTime, style: const TextStyle(fontSize: 12.5, fontStyle: FontStyle.italic),),
-                                    title: Text(
-                                        "1 ${historyBaseCurrency_['currency']} = ${snap.data?.currencies[index].value.toStringAsFixed(2)} ${snap.data?.currencies[index].code}"),
-                                    trailing: SizedBox(
-                                      height: 47,
-                                      width: 47,
-                                      child: Card(
-                                          color: AppColors.secondaryColor,
-                                          elevation: 10,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50)),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "${snap.data?.currencies[index].code}",
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                            ),
-                                          )),
-                                    ),
-                                  ),
+            child: RefreshIndicator(
+              onRefresh: _refreshCurrencies,
+              child: ListView.builder(
+                itemCount: _currenciesList.length + (_loading ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index < _currenciesList.length) {
+                    final currency = _currenciesList[index];
+                    return SizedBox(
+                      child: Card(
+                        color: Colors.black12,
+                        elevation: 0,
+                        child: ListTile(
+                          leading: SizedBox(
+                            height: 45,
+                            width: 45,
+                            child: Card(
+                              elevation: 5,
+                              color: AppColors.secondaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "${historyBaseCurrency_['flag']}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 20),
                                 ),
-                              );
-                            }),
-                      );
-                    }
-                  }))
+                              ),
+                            ),
+                          ),
+                          subtitle: Text(
+                            parsedDateTime,
+                            style: const TextStyle(
+                                fontSize: 12.5, fontStyle: FontStyle.italic),
+                          ),
+                          title: Text(
+                            "1 ${historyBaseCurrency_['currency']} = ${currency.value.toStringAsFixed(2)} ${currency.code}",
+                            style: const TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          trailing: SizedBox(
+                            height: 47,
+                            width: 47,
+                            child: Card(
+                              color: AppColors.secondaryColor,
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "${currency.code}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (_loading) {
+                    return const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    return SizedBox(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text("Something went wrong."),
+                        verticalGaps(20.0),
+                        const Text(
+                            "Please try again by pulling down to refresh the page.")
+                      ],
+                    ));
+                  }
+                },
+              ),
+            ),
+          )
         ],
       ),
     );

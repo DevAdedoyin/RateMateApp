@@ -35,8 +35,12 @@ class CurrencyConversionDataSource {
     }
   }
 
-  static Future<HistoricalCurrencyData> fetchHistoricalData(
-      {required baseCurrency, required date}) async {
+  static Future<HistoricalCurrencyData> fetchHistoricalData({
+    required baseCurrency,
+    required date,
+    required int pageKey,
+    required int pageSize,
+  }) async {
     try {
       final apiKey = dotenv.env['HISTORICAL_EXCHANGE_RATE_API_KEY'];
 
