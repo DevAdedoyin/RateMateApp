@@ -14,6 +14,7 @@ class OnboardingPages extends StatelessWidget {
 
     return SizedBox(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
             margin: const EdgeInsets.only(top: 40, bottom: 30),
