@@ -281,6 +281,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             "1 ${historyBaseCurrency_['currency']} = ${currency.value.toStringAsFixed(2)} ${currency.code}",
                             style: const TextStyle(
                               fontSize: 15,
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                           trailing: SizedBox(

@@ -15,8 +15,8 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   double _opacity = 0.2;
   bool _visibility = false;
-  double _smallSize = 100;
-  double _bigSize = 140;
+  double _smallSize = 70;
+  double _bigSize = 100;
 
   @override
   void initState() {
@@ -24,8 +24,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       setState(() {
         // _visibility = true;
         _opacity = 1.0;
-        _smallSize = 200;
-        _bigSize = 240;
+        _smallSize = 180;
+        _bigSize = 200;
       });
       Future.delayed(
         const Duration(milliseconds: 5000),
@@ -44,26 +44,30 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     Size size = MediaQuery.of(context).size;
     print("DEVICE HEIGHT ${size.height}");
     return Scaffold(
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-          ClipOval(
-            child: SizedBox(
-              width: double.maxFinite,
-              child: AnimatedContainer(
-                height: size.height < 690 ? _smallSize : _bigSize,
-                width: size.height < 690 ? _smallSize : _bigSize,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                duration: const Duration(milliseconds: 5000),
-                child: AnimatedOpacity(
-                    opacity: _opacity,
-                    duration: const Duration(milliseconds: 4000),
-                    child: Image.asset("assets/images/logo.PNG")),
+        body: Center(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+            AnimatedContainer(
+              height: size.height < 690 ? _smallSize : _bigSize,
+              width: size.height < 690 ? _smallSize : _bigSize,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.white,
               ),
-            ),
-          )
-        ]));
+              duration: const Duration(milliseconds: 5000),
+              child: AnimatedOpacity(
+                  opacity: _opacity,
+                  duration: const Duration(milliseconds: 4000),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset(
+                        "assets/images/logo.PNG",
+                        fit: BoxFit.contain,
+                      ))),
+            )
+          ]),
+        ));
   }
 }

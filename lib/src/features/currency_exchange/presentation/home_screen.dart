@@ -248,7 +248,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "${targetValue_.toDouble().toStringAsFixed(2)} ${targetCurrency_["currency"]}",
+                          "${targetCurrency_["currency"]} ${targetValue_.toDouble().toStringAsFixed(2)}",
                           style: TextStyle(
                             color: isDarkMode ? Colors.white70 : Colors.black87,
                             fontStyle: FontStyle.italic,
