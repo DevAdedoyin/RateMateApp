@@ -269,8 +269,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Text(
                           enteredCurrency_,
                           style: TextStyle(
-                              color: isDarkMode ? Colors.white70 : Colors.black,
-                              fontSize: 17,
+                              color: isDarkMode ? Colors.white : Colors.black,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold),
                         )
                       ],
@@ -282,7 +282,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Container(
             color: Colors.black12,
             child: VirtualKeyboard(
-                height: size.height * 0.255,
+                height: size.height >=750 ? size.height * 0.35 :  size.height * 0.255,
                 textColor: isDarkMode ? Colors.white : Colors.black87,
                 textController: _virtualKeyboardController,
                 defaultLayouts: const [
