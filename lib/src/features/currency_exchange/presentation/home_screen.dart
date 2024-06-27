@@ -25,7 +25,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _virtualKeyboardController =
-      TextEditingController();
+  TextEditingController();
   late Future<CurrencyConversionModel> _currencyDataFuture;
   Map<String, dynamic> conversion_rates = {};
 
@@ -47,21 +47,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final targetCurrency_ = ref.read(targetCurrency);
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
-        ref.read(targetValue.notifier).state =
-            conversion_rates[targetCurrency_["currency"]];
+        ref
+            .read(targetValue.notifier)
+            .state =
+        conversion_rates[targetCurrency_["currency"]];
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    TextTheme textTheme = Theme.of(context).textTheme;
+    Size size = MediaQuery
+        .of(context)
+        .size;
+    TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
     final baseCurrency_ = ref.watch(baseCurrency);
     final targetCurrency_ = ref.watch(targetCurrency);
     var targetValue_ = ref.watch(targetValue);
     final enteredCurrency_ = ref.watch(enteredCurrency);
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    bool isDarkMode = Theme
+        .of(context)
+        .brightness == Brightness.dark;
 
     return SizedBox(
       child: Column(
@@ -72,7 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: SizedBox(
               width: double.maxFinite,
               height:
-                  size.height < 601 ? size.height * 0.26 : size.height * 0.29,
+              size.height < 601 ? size.height * 0.26 : size.height * 0.29,
               child: Stack(alignment: Alignment.center, children: [
                 Positioned(
                     left: 0,
@@ -140,7 +148,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               Map<String, String> currency = {};
                               currency = await CountryCodePicker.selectCountry(
                                   context);
-                              ref.read(baseCurrency.notifier).state = {
+                              ref
+                                  .read(baseCurrency.notifier)
+                                  .state = {
                                 "currency": currency["currency"]!,
                                 "flag": currency["flag"]!
                               };
@@ -160,13 +170,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       selectCountry: () async {
                         Map<String, String> currency = {};
                         currency =
-                            await CountryCodePicker.selectCountry(context);
-                        ref.read(targetCurrency.notifier).state = {
+                        await CountryCodePicker.selectCountry(context);
+                        ref
+                            .read(targetCurrency.notifier)
+                            .state = {
                           "currency": currency["currency"]!,
                           "flag": currency["flag"]!
                         };
-                        ref.read(targetValue.notifier).state =
-                            conversion_rates["${currency["currency"]}"];
+                        ref
+                            .read(targetValue.notifier)
+                            .state =
+                        conversion_rates["${currency["currency"]}"];
                       },
                     )),
                 Container(
@@ -248,7 +262,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "${targetCurrency_["currency"]} ${targetValue_.toDouble().toStringAsFixed(2)}",
+                          "${targetCurrency_["currency"]} ${targetValue_
+                              .toDouble().toStringAsFixed(2)}",
                           style: TextStyle(
                             color: isDarkMode ? Colors.white70 : Colors.black87,
                             fontStyle: FontStyle.italic,
@@ -282,12 +297,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Container(
             color: Colors.black12,
             child: VirtualKeyboard(
-                height: size.height >=750 ? size.height * 0.35 :  size.height * 0.255,
+                height: size.height >= 750 && size.height <= 850 ? size.height *
+                    0.31 : size.height >= 850 ? size.height * 0.33 : size.height >= 700 && size.height <= 849 ? size.height * 0.25 : size
+                    .height * 0.22,
                 textColor: isDarkMode ? Colors.white : Colors.black87,
                 textController: _virtualKeyboardController,
                 defaultLayouts: const [
                   VirtualKeyboardDefaultLayouts.Arabic,
-                  VirtualKeyboardDefaultLayouts.English
+                  VirtualKeyboardDefaultLayouts.English,
                 ],
                 type: VirtualKeyboardType.Numeric,
                 onKeyPress: (VirtualKeyboardKey val) {
@@ -301,14 +318,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   }
 
                   // Update the state with the current text
-                  ref.read(enteredCurrency.notifier).state =
+                  ref
+                      .read(enteredCurrency.notifier)
+                      .state =
                       _textController.text;
 
                   // Parse the text to double, perform multiplication, and convert back to string
                   double enteredValue =
                       double.tryParse(_textController.text) ?? 0.0;
                   double convertedValue = enteredValue * targetValue_;
-                  ref.read(enteredCurrency.notifier).state =
+                  ref
+                      .read(enteredCurrency.notifier)
+                      .state =
                       convertedValue.toStringAsFixed(2).toString();
                 }),
           )

@@ -1,6 +1,6 @@
 import 'package:currnverter/src/routing/routes..dart';
 import 'package:currnverter/src/themes/theme.dart';
-import 'package:currnverter/src/themes/theme_provider.dart';
+import 'package:currnverter/src/themes/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,7 +13,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
   runApp(
-     ProviderScope(
+    const ProviderScope(
       child: CurrencyConversionApp(),
     ),
   );
@@ -28,16 +28,16 @@ class CurrencyConversionApp extends ConsumerStatefulWidget {
 }
 
 class _CurrencyConversionAppState extends ConsumerState<CurrencyConversionApp> {
-
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeNotifierProvider);
     return MaterialApp.router(
       routerConfig: goRouter,
       debugShowCheckedModeBanner: false,
       title: 'Currency Conversion',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
     );
   }
 }

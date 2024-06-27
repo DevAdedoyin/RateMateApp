@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../constants/sizing/gaps.dart';
+import '../../../../themes/theme_notifier.dart';
 import '../../../../themes/theme_provider.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -33,11 +34,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = ref.read(themeNotifierProvider.notifier);
     Size size = MediaQuery.of(context).size;
     print("DEVICE HEIGHT ${size.height}");
     final navPageNum = ref.watch(navPage);
     TextTheme textTheme = Theme.of(context).textTheme;
-    final themeNotifier = ref.read(themeProvider);
+    // final themeNotifier = ref.read(themeProvider);
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -55,7 +57,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               child: IconButton(
                   iconSize: 20,
                   padding: EdgeInsets.all(3),
-                  onPressed: themeNotifier.toggleTheme,
+                  onPressed: (){
+                    themeNotifier.toggleTheme();
+                  },
                   icon: const Icon(
                     Icons.mode_night,
                     color: AppColors.secondaryColor,

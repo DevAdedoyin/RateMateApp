@@ -1,4 +1,4 @@
-package com.example.currnverter
+package com.currnverter.currnverter
 
 import io.flutter.embedding.android.FlutterActivity
 
