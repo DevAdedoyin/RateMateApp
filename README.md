@@ -1,13 +1,15 @@
-# Currnverter App
-![image1](https://github.com/user-attachments/assets/070a5926-057d-4e4a-9c05-b2868950bdb0)
+# RateMate App
+![image2](https://github.com/user-attachments/assets/650cf472-0e86-49a5-a5cb-4c08c76fb839)
+![image1](https://github.com/user-attachments/assets/a73f4cc1-47dd-4b7c-9cb9-b213f7539b92)
+
 
 
 ## Project Description
-The Currnverter App is a simple and intuitive currency converter for quick and accurate conversions. Enter the amount, select the currencies, and get real-time exchange rates. Perfect for travelers, traders, and anyone needing fast conversions on the go.
+The RateMate App is a simple and intuitive currency converter for quick and accurate conversions. Enter the amount, select the currencies, and get real-time exchange rates. Perfect for travelers, traders, and anyone needing fast conversions on the go.
 
 ## Download
 <b color="red">To run the app and use on your android device kindly download via the link below.</b>
-### https://play.google.com/store/apps/details?id=com.currnverter.currnverter
+### https://play.google.com/store/apps/details?id=com.pauversil.ratemate
 
 ## Table of Content
 - Installation guide and configuration
