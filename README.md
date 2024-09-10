@@ -1,8 +1,5 @@
 # RateMate App
-![image2](https://github.com/user-attachments/assets/650cf472-0e86-49a5-a5cb-4c08c76fb839)
 ![image1](https://github.com/user-attachments/assets/a73f4cc1-47dd-4b7c-9cb9-b213f7539b92)
-
-
 
 ## Project Description
 The RateMate App is a simple and intuitive currency converter for quick and accurate conversions. Enter the amount, select the currencies, and get real-time exchange rates. Perfect for travelers, traders, and anyone needing fast conversions on the go.
