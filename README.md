@@ -1,5 +1,11 @@
 # RateMate App
-![image1](https://github.com/user-attachments/assets/a73f4cc1-47dd-4b7c-9cb9-b213f7539b92)
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ee991073-2fc8-44a0-b527-b0d619f1ae2e" width="200"/>
+  <img src="https://github.com/user-attachments/assets/58b8ffc8-677f-4efb-bbbd-e9a8219f0ed5" width="200"/>
+  <img src="https://github.com/user-attachments/assets/3c8851a9-61a6-4c22-86ce-d021d0089674" width="200"/>
+  <img src="https://github.com/user-attachments/assets/9eac89ae-2e5a-4f81-bc46-2cd30be8b2bd" width="200"/>
+</p>
 
 ## Project Description
 The RateMate App is a simple and intuitive currency converter for quick and accurate conversions. Enter the amount, select the currencies, and get real-time exchange rates. Perfect for travelers, traders, and anyone needing fast conversions on the go.
